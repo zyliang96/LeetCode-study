@@ -5,7 +5,9 @@
     "main": "index.js",
     "private": true,
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "install": "lerna bootstrap",
+        "clear": "lerna clean",
+        "list": "lerna list"
     },
     "author": "zyliang96",
     "license": "ISC",
@@ -24,7 +26,6 @@
         "eslint": "^7.32.0",
         "lerna": "^4.0.0",
         "lint-staged": "^11.1.2",
-        "node-xlsx": "^0.17.1",
         "prettier": "^2.4.0",
         "source-map-loader": "^3.0.0",
         "typescript": "^4.4.3"

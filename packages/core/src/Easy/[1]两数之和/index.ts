@@ -3,7 +3,7 @@
  * @param {number} target
  * @return {number[]}
  */
- var twoSum = function(nums, target) {
+function twoSum(nums: number[], target: number): number[] {
     const map = new Map();
     for (let i = 0; i < nums.length; i++) {//第一层循环
         const complement = target - nums[i];
