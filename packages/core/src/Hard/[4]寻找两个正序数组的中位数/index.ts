@@ -40,4 +40,41 @@
  * @param {number[]} nums2
  * @return {number}
  */
-function findMedianSortedArrays(nums1: number[], nums2: number[]): number {}
+function findMedianSortedArrays(nums1: number[], nums2: number[]): number {
+    /**
+     * 想法：
+     * 通过截取两个数组的中位数，然后判断取值范围
+     * 如果长度是奇数，说明一个数组的长度是奇数，一个数组的长度是偶函数，如果数组长度是偶数，则两个数组长度都是偶数或者两个数组都是奇数
+     * 所以求中位数应该就是求的 （m + n）/ 2 或者 （m + n）/ 2 + 1
+     */
+    const n: number = nums1.length;
+    const m: number = nums2.length;
+    const sum: number = n + m;
+    let result: number = 0;
+    // 奇数的时候，找第(m+n)/2 + 1个元素(取整)，偶数的时候，取(m+n) / 2 和 (m + n)/ 2 + 1 的元素和除以2
+    if (sum % 2) {
+        result = getMidNum(nums1, nums2, Math.ceil(sum / 2));
+    } else {
+        result =
+            (getMidNum(nums1, nums2, sum / 2) +
+                getMidNum(nums1, nums2, sum / 2 + 1)) /
+            2;
+    }
+
+    return result;
+}
+
+/**
+ * 获取数值
+ * 找第k个元素的值，比较两个数组前k / 2 个元素，然后判断是否符合的范围，然后移动对应的位置
+ * @param num1
+ * @param num2
+ * @param k
+ */
+function getMidNum(num1: number[], num2: number[], k: number): number {
+    const n: number = num1.length;
+    const m: number = num2.length;
+    let index1 = 0,
+        index2 = 0;
+        
+}
