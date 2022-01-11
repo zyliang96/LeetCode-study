@@ -76,5 +76,39 @@ function getMidNum(num1: number[], num2: number[], k: number): number {
     const m: number = num2.length;
     let index1 = 0,
         index2 = 0;
-        
+    while (true) {
+        // 第一个数组触发边界，所以这个时候的值请改是第二个数组的偏移量+
+        if (index1 === n) {
+            return num2[index2 + k - 1];
+        }
+
+        if (index2 === m) {
+            return num1[index1 + k - 1];
+        }
+
+        if (k === 1) {
+            return Math.min(num1[index1], num2[index2]);
+        }
+        // 第k个位置的一半
+        let half = Math.floor(k / 2);
+        // 第一个数组需要判断的位置，实际上是数组中的位置，无论是n、m,还是index1 、index2 ，都应该保持逻辑上的一致，即都应该是从0开始的位置，这样才能统一处理
+        const newIndex1 = Math.min(index1 + half, n) - 1;
+        // 第二个数组需要判断的位置
+        const newIndex2 = Math.min(index2 + half, m) - 1;
+        // 两个数组的点位
+        const point1 = num1[newIndex1],
+            point2 = num2[newIndex2];
+        // 第一个点位 小于等于 第二个点位的时候，第一个点位需要右移，即排除掉第一个数组左侧的数据
+        if (point1 <= point2) {
+            // newIndex 是数组的位置，所以需要加 1 才能表示准确位置，newIndex + 1 - index1 实际上是偏移量，需要排除的数据个数，每次实际上都是在二分，因为newIndex是根据half计算的
+            k -= newIndex1 - index1 + 1;
+            index1 = newIndex1 + 1;
+        } else {
+            // 第一个点位 大于 第二个点位的时候，第二个点位需要右移，即排除掉了第二个数组左侧的数据
+            k -= newIndex2 - index2 + 1;
+            index2 = newIndex2 + 1;
+        }
+    }
 }
+
+console.log(findMedianSortedArrays([1, 2], [3, 4]));
