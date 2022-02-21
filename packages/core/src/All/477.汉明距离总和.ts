@@ -1,34 +1,26 @@
 /*
- * @lc app=leetcode.cn id=461 lang=typescript
+ * @lc app=leetcode.cn id=477 lang=typescript
  *
- * [461] 汉明距离
+ * [477] 汉明距离总和
  */
-/**
- * 思路：
- * 1、这个题感觉很简单，只要两个值做异或运算，然后求1的个数即可
- * @param x 
- * @param y 
- */
-// @lc code=start
-// function hammingDistance(x: number, y: number): number {
-//     let n = x ^ y;
-//     let count = 0;
-//     while (n) {
-//         n &= n - 1;
-//         count++
-//     }
-//     return count
-// };
 
 /**
- * 这里使用了java中的计算1的个数的方法
- * @param x 
- * @param y 
- * @returns 
+ * 思路：
+ * 1、最容易想到的方法应该是通过双层循环遍历，然后累加每一次的汉明距离
+ * @param nums 
  */
- function hammingDistance(x: number, y: number): number {
-    return bitCount(x ^ y)
-};
+// @lc code=start
+// function totalHammingDistance(nums: number[]): number {
+//     let sum = 0;
+//     const len = nums.length;
+//     for (let i = 0; i < len; i++) {
+//         for (let j = i + 1; j < len; j++) {
+//             sum += bitCount(nums[i] ^ nums[j])
+//         }
+//     }
+//     return sum
+// };
+
 /**
  * java中计算数字1的个数的方法
  * @param x 
@@ -69,6 +61,28 @@ function bitCount(i: number): number {
     // console.log(i & 0x3f)
     // 因为在合成16个的时候，实际位用了8位，但是8位还有遗留，所以只有最低位是满足条件的，用0x3f,是因为整数最多32位，所以用6位来计算即可
     return i & 0x3f;
+};
+
+
+/**
+ * 思路：
+ * 计算每一位1的个数，因为计算总和，那么实际上计算每一位对应1的个数即可得出综合，因为任意两个都需要进行异或操作
+ * @param nums 
+ * @returns 
+ */
+function totalHammingDistance(nums: number[]): number {
+    let sum = 0;
+    const len = nums.length;
+    let L = 31;
+    for (let i = 0; i < L; i++) {
+        let count = 0
+        for (let j = 0; j < len; j++) {
+            count += (nums[j] >> i) & 1
+        }
+        // 汉明距离是两个数的二进制数对应位不同的数量
+        sum += (len - count) * count;
+    }
+    return sum
 };
 // @lc code=end
 
