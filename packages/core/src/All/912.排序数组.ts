@@ -182,48 +182,156 @@
  * @param nums 
  * @returns 
  */
+// function sortArray(nums: number[]): number[] {
+//     const len = nums.length;
+//     // 合并两个已经有序的列表，这里需要注意的是，right应该取=，注意边界问题
+//     function merge(target, list, left, mid, right) {
+//         for (let i = left; i <= right; i++) {
+//             list[i] = target[i];
+//         }
+
+//         let l = left, r = mid + 1;
+//         for (let i = left; i <= right; i++) {
+//             // 如果左边已经排完了，这个时候，就直接把右边的赋值即可
+//             if (l > mid) {
+//                 target[i] = list[r++]
+//             } else if (r > right) {
+//                 // 如果右侧已经排完了，这个时候，就直接把左侧的赋值即可
+//                 target[i] = list[l++]
+//             } else if (list[l] > list[r]) {
+//                 // 右侧的数据比左侧小，则当前位置用右侧的数据，然后右侧计数+1
+//                 target[i] = list[r++]
+//             } else {
+//                 // 左侧的数据比较小，则当前位置用左侧的数据，然后左侧计数+1
+//                 target[i] = list[l++]
+//             }
+//         }
+//     }
+//     // 排序，利用二分的方式归并
+//     // function sort(target, list, left, right) {
+//     //     if (right <= left) {
+//     //         return
+//     //     }
+//     //     const mid = left + ((right - left) >> 1);
+//     //     sort(target, list, left, mid)
+//     //     sort(target, list, mid + 1, right)
+//     //     merge(target, list, left, mid, right)
+
+//     // }
+
+//     // 自底向上的归并排序
+//     function sort(target, list, left, right) {
+//         const len = right - left
+//         for (let i = 1; i <= len; i *= 2) {
+//             for (let j = left; j <= right - i; j += i + i) {
+//                 const mid = j + i - 1;
+//                 const end = Math.min(j + i + i - 1, right)
+//                 merge(target, list, j, mid, end)
+//             }
+//         }
+
+//     }
+//     let copyList = []
+//     sort(nums, copyList, 0, len - 1)
+//     return nums
+// };
+
+
+/**
+ * 快速排序
+ * 快速排序的基本思想：通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。建立在归并的基础上，只是在遍历的过程中就先将数据做了大小的一些处理
+ * 算法描述
+    1. 从数列中挑出一个元素，称为 “基准”（pivot）；
+    2. 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
+    3. 递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。
+ * @param nums 
+ * @returns 
+ */
 function sortArray(nums: number[]): number[] {
     const len = nums.length;
-    // 合并两个已经有序的列表，这里需要注意的是，right应该取=，注意边界问题
-    function merge(target, list, left, mid, right) {
-        for (let i = left; i <= right; i++) {
-            list[i] = target[i];
-        }
-
-        let l = left, r = mid + 1;
-        for (let i = left; i <= right; i++) {
-            // 如果左边已经排完了，这个时候，就直接把右边的赋值即可
-            if (l > mid) {
-                target[i] = list[r++]
-            } else if (r > right) {
-                // 如果右侧已经排完了，这个时候，就直接把左侧的赋值即可
-                target[i] = list[l++]
-            } else if (list[l] > list[r]) {
-                // 右侧的数据比左侧小，则当前位置用右侧的数据，然后右侧计数+1
-                target[i] = list[r++]
-            } else {
-                // 左侧的数据比较小，则当前位置用左侧的数据，然后左侧计数+1
-                target[i] = list[l++]
-            }
-        }
+    function exchange(i, j) {
+        const temp = nums[j];
+        nums[j] = nums[i];
+        nums[i] = temp
     }
-    // 排序，利用二分的方式归并
-    function sort(target, list, left, right) {
-        if (right <= left) {
+
+    /**
+     * 方法1 基本的快速排序方法
+     */
+    // 合并两个已经有序的列表，这里需要注意的是，right应该取=，注意边界问题
+    function partition(list, start, end) {
+        let left = start;
+        // 这里 +1 是为了后续统一使用--end 的逻辑
+        let right = end + 1;
+        let target = list[left];
+        while (true) {
+            // 先遍历小于当前位置的
+            while (list[++left] < target) {
+                if (left === end) {
+                    break
+                }
+            }
+            // 遍历右侧小于当前值的
+            while (target < list[--right]) {
+                if (right === start) {
+                    break
+                }
+            }
+            // 如果start 大于等于 end 的时候，则说明比较完成，跳出循环。 
+            if (left >= right) {
+                break
+            }
+            // 经过前两次遍历，则可以找到左边第一个大于目标的，右边第一个小于目标的，这个时候交换这两个值的位置
+            exchange(left, right)
+        }
+        // 这个时候交换目标值和start的位置，这个试试
+        exchange(start, right)
+        return right
+    }
+
+    // 基本快排
+    // function sort(list, start, end) {
+    //     if (start < end) {
+    //         let partitionIndex = partition(list, start, end);
+    //         sort(list, start, partitionIndex)
+    //         sort(list, partitionIndex + 1, end)
+    //     }
+
+    // }
+
+
+    function sort(list, start, end) {
+        if (end <= start) {
             return
         }
-        const mid = left + ((right - left) >> 1);
-        sort(target, list, left, mid)
-        sort(target, list, mid + 1, right)
-        merge(target, list, left, mid, right)
-
+        // 左右节点
+        let left = start, right = end;
+        // 目标值
+        let target = list[left];
+        // 遍历数据
+        let i = start + 1;
+        // 没有遍历完成的时候，经过这一步操作之后，[start,left-1]都是小于target的数据，[left,right]都是等于target的数据，[right+1,end]都是大于target的数据
+        while (i <= end) {
+            // list[i] 小于 target 的时候，交换left和right的值，并且都进行+1处理
+            if (list[i] < target) {
+                exchange(i++, left++)
+            } else if (list[i] > target) {
+                // list[i] 大于 target 的时候， 将 i 和 right 的值进行互换
+                exchange(i, right--)
+            } else {
+                // list[i] 等于 target 的时候，值进行i的增加，是循环比那里下去
+                i++
+            }
+        }
+        sort(list, start, left - 1)
+        sort(list, right + 1, end)
     }
-    let copyList = []
-    sort(nums, copyList, 0, len - 1)
+    sort(nums, 0, len - 1)
     return nums
 };
 
 var a = [5, 2, 1, 3, 4, 8, 9]
+// var a = [5, 2, 3, 1]
 var result = sortArray(a)
 console.log(result)
 // @lc code=end
