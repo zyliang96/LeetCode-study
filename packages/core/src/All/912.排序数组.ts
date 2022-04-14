@@ -406,10 +406,79 @@ function QuickSort(nums: number[]): number[] {
 
 /**
  * 堆排序
+ * 堆排序如果是从大到小的排列，则构建最大堆，然后将堆顶元素放到数组最后一位，然后再构建新的最大堆
+ * 算法描述
+    1、将初始待排序关键字序列(R1,R2….Rn)构建成大顶堆，此堆为初始的无序区；
+    2、将堆顶元素R[1]与最后一个元素R[n]交换，此时得到新的无序区(R1,R2,……Rn-1)和新的有序区(Rn),且满足R[1,2…n-1]<=R[n]；
+    3、由于交换后新的堆顶R[1]可能违反堆的性质，因此需要对当前无序区(R1,R2,……Rn-1)调整为新堆，然后再次将R[1]与无序区最后一个元素交换，得到新的无序区(R1,R2….Rn-2)和新的有序区(Rn-1,Rn)。不断重复此过程直到有序区的元素个数为n-1，则整个排序过程完成。
+ * @param nums 
+ */
+function heapSort(nums: number[]): number[] {
+
+    function exchange(list, i, j) {
+        const temp = list[j];
+        list[j] = list[i];
+        list[i] = temp
+    }
+    function sortBase(list: number[], start?: number, end?: number) {
+        // start如果不存在，则直接设置为0
+        if (!start) {
+            start = 0
+        }
+        // end不存在则设置为列表长度
+        if (!end && end !== 0) {
+            end = list.length - 1
+        }
+        // 如果开始位置大于结束位置，则直接抛出错误
+        if (start > end) {
+            throw new RangeError(`start in must less than end`)
+        }
+        // 构建有序的最大堆
+        for (let i = (start + ((end - start) >> 1)); i >= 0; i--) {
+            sink(list, i, end)
+        }
+        let i = end
+        // 使堆变成有序的列表
+        while (i > 0) {
+            // 因为堆本身是最大堆，所以将堆顶最大的数据放到最后即可
+            exchange(list, 0, i--)
+            // 重新构建最大堆
+            sink(list, 0, i)
+        }
+    }
+
+    /**
+     * 下沉
+     */
+    function sink(list: number[], index: number, len: number) {
+        while (2 * index <= len) {
+            let j = 2 * index
+            if (j < len && list[j] < list[j + 1]) {
+                j++
+            }
+            if (list[index] >= list[j]) {
+                break
+            }
+            exchange(list, index, j)
+            index = j
+        }
+    }
+    sortBase(nums, 0, nums.length - 1)
+    return nums
+}
+
+/**
+ * 计数排序
+ * 其核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。 作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的整数
+ * 算法描述
+    1、找出待排序的数组中最大和最小的元素；
+    2、统计数组中每个值为i的元素出现的次数，存入数组C的第i项；
+    3、对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）；
+    4、反向填充目标数组：将每个元素i放在新数组的第C(i)项，每放一个元素就将C(i)减去1。
  * @param nums 
  */
 function sortArray(nums: number[]): number[] {
-
+    
 }
 
 // var a = [5, 2, 1, 3, 4, 8, 9]
