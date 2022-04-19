@@ -12,7 +12,7 @@ function generateMatrix(n: number): number[][] {
         row = 0;
     let offset = 1;
     let result = [];
-    let loop = n >> 1;
+    let loop = (n >> 1) + 1;
     let count = 1;
     for (let i = 0; i < n; i++) {
         result[i] = [];
@@ -21,7 +21,6 @@ function generateMatrix(n: number): number[][] {
         offset = n - num * 2;
         let i = col,
             j = row;
-        console.log(i, j, offset);
         // 顶部从左到右
         for (i = col, len = col + offset - 1; i < len; i++) {
             result[j][i] = count++;
@@ -43,9 +42,8 @@ function generateMatrix(n: number): number[][] {
         row++;
         num++;
     }
-    if (n % 2) {
-        result[row][col] = count++;
-    }
     return result;
 }
+
+console.log(generateMatrix(3));
 // @lc code=end

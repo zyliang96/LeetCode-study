@@ -12,7 +12,7 @@ function generateMatrix(n: number): number[][] {
         row = 0;
     let offset = 1;
     let result = [];
-    let loop = n >> 1;
+    let loop = (n >> 1) + 1;
     let count = 1;
     for (let i = 0; i < n; i++) {
         result[i] = [];
@@ -48,4 +48,6 @@ function generateMatrix(n: number): number[][] {
     }
     return result;
 }
+
+console.log(generateMatrix(3));
 // @lc code=end

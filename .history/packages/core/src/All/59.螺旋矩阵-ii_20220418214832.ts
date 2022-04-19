@@ -48,4 +48,6 @@ function generateMatrix(n: number): number[][] {
     }
     return result;
 }
+
+console.log(generateMatrix(3));
 // @lc code=end

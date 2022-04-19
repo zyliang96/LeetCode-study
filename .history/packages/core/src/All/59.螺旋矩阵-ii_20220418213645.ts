@@ -12,22 +12,21 @@ function generateMatrix(n: number): number[][] {
         row = 0;
     let offset = 1;
     let result = [];
-    let loop = n >> 1;
+    let loop = (n >> 1) + 1;
     let count = 1;
     for (let i = 0; i < n; i++) {
         result[i] = [];
     }
     while (num < loop) {
-        offset = n - num * 2;
+        offset += n - num * 2;
         let i = col,
             j = row;
-        console.log(i, j, offset);
         // 顶部从左到右
-        for (i = col, len = col + offset - 1; i < len; i++) {
+        for (i = col, len = col + offset; i < len; i++) {
             result[j][i] = count++;
         }
         // 右侧从顶到底
-        for (j = row; j < row + offset - 1; j++) {
+        for (j = row; j < row + offset; j++) {
             result[j][i] = count++;
         }
         // 底部从右到左
@@ -42,9 +41,6 @@ function generateMatrix(n: number): number[][] {
         col++;
         row++;
         num++;
-    }
-    if (n % 2) {
-        result[row][col] = count++;
     }
     return result;
 }
