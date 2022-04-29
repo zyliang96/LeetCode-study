@@ -46,5 +46,6 @@ function connect(root: Node | null): Node | null {
   }
   return root
 };
+
 // @lc code=end
 
