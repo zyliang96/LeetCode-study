@@ -7,8 +7,8 @@
 // @lc code=start
 /**
  * 自己实现对应的api方法实现去除字符串等
- * @param s 
- * @returns 
+ * @param s
+ * @returns
  */
 // function reverseWords(s: string): string {
 //   function reverse(list, i, j) {
@@ -55,32 +55,33 @@
 //   return list.join('')
 // };
 
-
 function reverseWords(s: string): string {
-  let list = [], len = s.length;
-  let temp = [];
-  let i = 0;
-  while (s[i] === ' ') {
-    i++;
-  }
-  for (; i < len; i++) {
-    if (i - 1 > 0 && s[i] === s[i - 1] && s[i] === ' ') {
-      continue
-    } else if (s[i] === ' ') {
-      if (temp.length > 0) {
-        list.unshift(temp.join(''))
-        temp = []
-      }
-    } else {
-      temp.push(s[i])
+    let list = [],
+        len = s.length;
+    let temp = [];
+    let i = 0;
+
+    // 去除首空格
+    while (s[i] === " ") {
+        i++;
     }
-  }
-  if (temp.length > 0) {
-    list.unshift(temp.join(''))
-  }
-  return list.join(' ')
-};
+    for (; i < len; i++) {
+        if (i - 1 > 0 && s[i] === s[i - 1] && s[i] === " ") {
+            continue;
+        } else if (s[i] === " ") {
+            if (temp.length > 0) {
+                list.unshift(temp.join(""));
+                temp = [];
+            }
+        } else {
+            temp.push(s[i]);
+        }
+    }
+    if (temp.length > 0) {
+        list.unshift(temp.join(""));
+    }
+    return list.join(" ");
+}
 
-// console.log(reverseWords("the sky is blue"))
+console.log(reverseWords("the sky is blue"));
 // @lc code=end
-
