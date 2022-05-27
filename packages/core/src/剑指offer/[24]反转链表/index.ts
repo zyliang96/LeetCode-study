@@ -27,6 +27,7 @@
  * @returns 
  */
  function reverseList(head: ListNode | null): ListNode | null {
+    // 翻转链表
     let pre = null;
     while(head){
         const temp = head.next
